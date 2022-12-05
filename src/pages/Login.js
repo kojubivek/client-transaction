@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { Alert } from "react-bootstrap";
+import { Alert, Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 import { CustomeInput } from "../components/custom-input/CustomInput";
 
 import { Layout } from "../components/layout/Layout";
 import { loginUser } from "../utils/axiosHelper";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
+  const navigate = useNavigate();
   const [logInDetails, setLogInDetails] = useState({});
   const [response, setReponse] = useState({});
   const inputFields = [
@@ -18,6 +19,7 @@ export const Login = () => {
       required: true,
       name: "email",
       type: "email",
+      value: logInDetails.email,
     },
     {
       label: "pin",
@@ -27,6 +29,7 @@ export const Login = () => {
       type: "number",
       min: 1000,
       max: 9999,
+      value: logInDetails.pin,
     },
   ];
   const onChangeHandle = (e) => {
@@ -35,11 +38,15 @@ export const Login = () => {
   };
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    console.log(logInDetails);
+
     const { data } = await loginUser(logInDetails);
     data.status === "success" && setReponse(data);
 
     setReponse(data);
+    if (data.status === "success") {
+      navigate("/dashboard");
+      sessionStorage.setItem("user", JSON.stringify(data));
+    }
   };
 
   return (
