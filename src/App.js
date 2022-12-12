@@ -3,6 +3,9 @@ import "./App.css";
 import { Dashboard } from "./pages/Dashboard";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
+import { ToastContainer } from "react-bootstrap";
+import "react-toastify/dist/ReactToastify.css";
+
 const App = () => {
   return (
     <div>
@@ -11,6 +14,7 @@ const App = () => {
         <Route path="register" element={<Register />} />
         <Route path="dashboard" element={<Dashboard />} />
       </Routes>
+      <ToastContainer />
     </div>
   );
 };

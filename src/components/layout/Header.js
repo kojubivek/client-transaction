@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
   const [user, setUser] = useState({});
@@ -12,6 +13,9 @@ export const Header = () => {
     console.log(user);
     setUser(user);
   }, []);
+  const handleOnLogOut = () => {
+    sessionStorage.removeItem("user");
+  };
   return (
     <Navbar bg="primary" expand="md" variant="dark">
       <Container>
@@ -24,7 +28,7 @@ export const Header = () => {
                 <div className="nav-link fw-bolder text-warning">
                   Welcome back {user?.name}
                 </div>
-                <Link to="#" className="nav-Link">
+                <Link to="/" className="nav-Link" onClick={handleOnLogOut}>
                   Logout
                 </Link>
               </>

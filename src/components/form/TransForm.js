@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Col, Row, Button, Form } from "react-bootstrap";
+import { postTrans } from "../../utils/axiosHelper";
+import { toast } from "react-toastify";
 
 const initialState = {
-  type: "",
+  type: "Choose..",
   name: "",
   amount: "",
 };
-export const TransForm = () => {
+export const TransForm = ({ getTrans }) => {
   const [form, setForm] = useState(initialState);
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -15,9 +17,14 @@ export const TransForm = () => {
       [name]: value,
     });
   };
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
+    const { status, message } = await postTrans(form);
+
+    toast[status](message);
+
     setForm(initialState);
+    getTrans();
   };
   return (
     <>
@@ -26,14 +33,14 @@ export const TransForm = () => {
           <Col md="2" className="mb-2">
             <Form.Select
               name="type"
-              defaultValue="Choose..."
               required
+              defaultValue="Choose..."
               onChange={handleOnChange}
               value={form.type}
             >
-              Choose...
-              <option>Expense</option>
-              <option>Income</option>
+              <option>Choose...</option>
+              <option value="expenses">Expense</option>
+              <option value="income">Income</option>
             </Form.Select>
           </Col>
           <Col md="5" className="mb-2">
